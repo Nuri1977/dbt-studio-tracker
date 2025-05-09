@@ -11,8 +11,5 @@
   "observability": {
     "enabled": true
   },
-  "upload_source_maps": true,
-  "env": {
-    "PRISMA_CLIENT_ENGINE_TYPE": "dataproxy"
-  }
+  "upload_source_maps": true
 }

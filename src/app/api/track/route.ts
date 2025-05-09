@@ -1,8 +1,7 @@
 import { db } from '@/lib/prisma';
-import { AppUpdate } from '@prisma/client';
 import { NextResponse } from 'next/server';
+import { AppUpdate } from '../../../../generated/prisma';
 
-export const runtime = 'edge'; // Mark this route as compatible with edge runtime
 
 export async function GET(request: Request) {
   try {
@@ -33,7 +32,7 @@ export async function GET(request: Request) {
   } catch (error) {
     console.error('Error fetching app updates:', error);
     return NextResponse.json(
-      { error: 'Failed to fetch app updates', message: error instanceof Error ? error.message : String(error) },
+      { error: 'Failed to fetch app updates' },
       { status: 500 }
     );
   }
@@ -71,7 +70,7 @@ export async function POST(request: Request) {
   } catch (error) {
     console.error('Error tracking app update:', error);
     return NextResponse.json(
-      { error: 'Failed to track app update', message: error instanceof Error ? error.message : String(error) },
+      { error: 'Failed to track app update' },
       { status: 500 }
     );
   }
