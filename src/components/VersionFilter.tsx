@@ -28,6 +28,10 @@ const VersionFilter = ({
   // State to store sorted versions
   const [sortedVersions, setSortedVersions] = useState<string[]>([]);
   const [latestVersion, setLatestVersion] = useState<string | null>(null);
+  // State to track the currently selected version in the UI
+  const [selectedVersion, setSelectedVersion] = useState<string | null>(
+    currentVersion
+  );
 
   // Sort and cache versions on component mount
   useEffect(() => {
@@ -44,8 +48,24 @@ const VersionFilter = ({
     }
   }, [versions]);
 
-  // If no version is selected, default to latest
-  const displayVersion = currentVersion || latestVersion;
+  // Sync the selected version with currentVersion when it changes
+  useEffect(() => {
+    setSelectedVersion(currentVersion);
+  }, [currentVersion]);
+
+  const handleVersionChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
+    const newVersion = e.target.value === "all" ? null : e.target.value;
+    setSelectedVersion(newVersion);
+
+    // Update URL with selected version
+    const url = new URL(window.location.href);
+    if (newVersion === null) {
+      url.searchParams.delete("version");
+    } else {
+      url.searchParams.set("version", newVersion);
+    }
+    window.location.href = url.toString();
+  };
 
   return (
     <div className="flex items-center space-x-2">
@@ -59,17 +79,8 @@ const VersionFilter = ({
         <select
           id="version-select"
           className="rounded-md border border-gray-300 bg-white py-2 pl-3 pr-10 text-sm shadow-sm focus:border-blue-500 focus:outline-none focus:ring-1 focus:ring-blue-500"
-          defaultValue={displayVersion || "all"}
-          onChange={(e) => {
-            // Update URL with selected version
-            const url = new URL(window.location.href);
-            if (e.target.value === "all") {
-              url.searchParams.delete("version");
-            } else {
-              url.searchParams.set("version", e.target.value);
-            }
-            window.location.href = url.toString();
-          }}
+          value={selectedVersion || "all"}
+          onChange={handleVersionChange}
         >
           <option value="all">All Versions</option>
           {sortedVersions.map((version) => (
@@ -79,9 +90,10 @@ const VersionFilter = ({
           ))}
         </select>
       </div>
-      {currentVersion && (
+      {selectedVersion && (
         <button
           onClick={() => {
+            setSelectedVersion(null);
             const url = new URL(window.location.href);
             url.searchParams.delete("version");
             window.location.href = url.toString();
