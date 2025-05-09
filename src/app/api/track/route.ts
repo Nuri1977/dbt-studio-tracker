@@ -1,7 +1,42 @@
 import { db } from '@/lib/prisma';
-import App from 'next/app';
 import { NextResponse } from 'next/server';
 import { AppUpdate } from '../../../../generated/prisma';
+
+
+export async function GET(request: Request) {
+  try {
+    // Extract query parameters
+    const { searchParams } = new URL(request.url);
+    const secretKey = searchParams.get('api_key');
+    const version = searchParams.get('version');
+
+    // Build filter conditions
+    const where = version && version !== 'all' 
+      ? { version: version } 
+      : undefined;
+
+    // TODO: Validate the secret key
+    const res = await db.appUpdate.findMany({
+      where,
+      orderBy: {
+        timestamp: 'desc', // Sort by timestamp, newest first
+      }
+    });
+    if (!res) {
+      return NextResponse.json(
+        { error: 'No app updates found' },
+        { status: 404 }
+      );
+    }
+    return NextResponse.json(res, { status: 200 });
+  } catch (error) {
+    console.error('Error fetching app updates:', error);
+    return NextResponse.json(
+      { error: 'Failed to fetch app updates' },
+      { status: 500 }
+    );
+  }
+}
 
 export async function POST(request: Request) {
   try {
