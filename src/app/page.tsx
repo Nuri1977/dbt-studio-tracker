@@ -213,6 +213,9 @@ export default async function Home({
                       Platform
                     </th>
                     <th className="py-3 text-left text-xs font-medium uppercase tracking-wider text-gray-500">
+                      Client ID
+                    </th>
+                    <th className="py-3 text-left text-xs font-medium uppercase tracking-wider text-gray-500">
                       Date
                     </th>
                   </tr>
@@ -230,6 +233,9 @@ export default async function Home({
                       </td>
                       <td className="py-3 text-sm text-gray-500">
                         {update.platform}
+                      </td>
+                      <td className="py-3 text-sm text-gray-500">
+                        {update.clientId.substring(0, 16)}...
                       </td>
                       <td className="py-3 text-sm text-gray-500">
                         {new Date(update.timestamp).toLocaleDateString()}
