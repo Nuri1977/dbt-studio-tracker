@@ -98,6 +98,12 @@ export default async function AppUpdatePage({
                     scope="col"
                     className="px-6 py-3 text-left text-xs font-medium uppercase tracking-wider text-gray-500"
                   >
+                    Client ID
+                  </th>
+                  <th
+                    scope="col"
+                    className="px-6 py-3 text-left text-xs font-medium uppercase tracking-wider text-gray-500"
+                  >
                     Timestamp
                   </th>
                   <th
@@ -124,6 +130,11 @@ export default async function AppUpdatePage({
                     </td>
                     <td className="whitespace-nowrap px-6 py-4 text-sm text-gray-500">
                       {update.arch}
+                    </td>
+                    <td className="whitespace-nowrap px-6 py-4 text-sm text-gray-500">
+                      <span title={update.clientId}>
+                        {update.clientId.substring(0, 8)}...
+                      </span>
                     </td>
                     <td className="whitespace-nowrap px-6 py-4 text-sm text-gray-500">
                       {new Date(update.timestamp).toLocaleString()}

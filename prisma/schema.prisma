@@ -23,6 +23,7 @@ model AppUpdate {
   timestamp DateTime @default(now())
   hostname  String?
   createdAt DateTime @default(now())
+  clientId  String
 
   @@map("app_updates")
 }

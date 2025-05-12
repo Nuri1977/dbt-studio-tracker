@@ -44,7 +44,7 @@ export async function POST(request: Request) {
     const data = await request.json() as AppUpdate;
     
     // Validate required fields
-    if (!data.event || !data.version || !data.platform || !data.arch) {
+    if (!data?.event || !data?.version || !data?.platform || !data?.arch || !data?.clientId) {
       return NextResponse.json(
         { error: 'Missing required fields' },
         { status: 400 }
@@ -60,6 +60,7 @@ export async function POST(request: Request) {
         arch: data.arch,
         timestamp: data.timestamp ? new Date(data.timestamp) : new Date(),
         hostname: data.hostname || null,
+        clientId: data.clientId,
       },
     });
 
