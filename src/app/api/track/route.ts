@@ -1,6 +1,5 @@
 import { db } from '@/lib/prisma';
 import { NextResponse } from 'next/server';
-import { AppUpdate } from '../../../../generated/prisma';
 
 
 export async function GET(request: Request) {
@@ -41,7 +40,7 @@ export async function GET(request: Request) {
 export async function POST(request: Request) {
   try {
     // Parse the request body
-    const data = await request.json() as AppUpdate;
+    const data = await request.json() as any;
     
     // Validate required fields
     if (!data?.event || !data?.version || !data?.platform || !data?.arch || !data?.clientId) {
